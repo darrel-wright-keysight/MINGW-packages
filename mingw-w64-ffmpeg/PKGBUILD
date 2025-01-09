@@ -107,9 +107,9 @@ prepare() {
   cp -fHv "${srcdir}"/pathtools.[ch] libavfilter/
 
   apply_patch_with_msg 0005-Win32-Add-path-relocation-to-frei0r-plugins-search.patch
-  
+
   if [[ "${enable_nogpl}" != true ]]; then
-    apply_patch_with_msg 099f88b8641dfc299f3896d17d9addc5b9ae7799.patch")
+    apply_patch_with_msg 099f88b8641dfc299f3896d17d9addc5b9ae7799.patch
   fi
 }
 
