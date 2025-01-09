@@ -42,7 +42,7 @@ depends=("${MINGW_PACKAGE_PREFIX}-bzip2"
          "${MINGW_PACKAGE_PREFIX}-glib2"
          "${MINGW_PACKAGE_PREFIX}-gsfonts"
          "${MINGW_PACKAGE_PREFIX}-jasper"
-         "${MINGW_PACKAGE_PREFIX}-jbigkit"
+         $([[ "${enable_nogpl}" != true ]] && echo "${MINGW_PACKAGE_PREFIX}-jbigkit")
          "${MINGW_PACKAGE_PREFIX}-lcms2"
          "${MINGW_PACKAGE_PREFIX}-libheif"
          "${MINGW_PACKAGE_PREFIX}-liblqr"
@@ -145,7 +145,7 @@ build() {
     --without-autotrace \
     --without-dps \
     --without-fpx \
-    --with-jbig \
+    $([[ "${enable_nogpl}" != true ]] && echo --with-jbig || echo --without-jbig) \
     --without-perl \
     --without-x \
     --with-raqm \
