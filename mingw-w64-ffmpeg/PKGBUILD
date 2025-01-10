@@ -64,6 +64,7 @@ depends=("${MINGW_PACKAGE_PREFIX}-aom"
           $([[ "${enable_nogpl}" != true ]] && echo "${MINGW_PACKAGE_PREFIX}-libx264" || echo "${MINGW_PACKAGE_PREFIX}-openh264")
           $([[ "${enable_nogpl}" != true ]] && echo "${MINGW_PACKAGE_PREFIX}-x265")
           $([[ "${enable_nogpl}" != true ]] && echo "${MINGW_PACKAGE_PREFIX}-xvidcore")
+          $([[ "${enable_nogpl}" == true ]] && echo "${MINGW_PACKAGE_PREFIX}-librsvg")
          "${MINGW_PACKAGE_PREFIX}-zimg"
          "${MINGW_PACKAGE_PREFIX}-zlib"
          "${MINGW_PACKAGE_PREFIX}-zvbi")
