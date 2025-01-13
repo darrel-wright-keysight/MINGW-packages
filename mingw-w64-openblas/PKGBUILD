@@ -73,7 +73,9 @@ _build_openblas() {
   fi
 
   if [[ ${MINGW_PACKAGE_PREFIX} == *-clang-* ]]; then
-    _extra_config+=("-DOpenMP_Fortran_FLAGS=-fopenmp" "-DOpenMP_Fortran_LIB_NAMES=omp")
+    if [[ "${use_openmp}" == true ]]; then
+      _extra_config+=("-DOpenMP_Fortran_FLAGS=-fopenmp" "-DOpenMP_Fortran_LIB_NAMES=omp")
+    fi
     export FFLAGS="-I${MINGW_PREFIX}/include"
   fi
 
@@ -84,9 +86,9 @@ _build_openblas() {
     -DBUILD_SHARED_LIBS=ON \
     -DBUILD_STATIC_LIBS=ON \
     -DBUILD_TESTING=OFF \
-    -DUSE_THREAD=ON \
-    -DNUM_THREADS=64 \
-    -DUSE_OPENMP=ON \
+    $([[ "${use_thread}" != true ]] && echo "-DUSE_THREAD=0" || echo "-DUSE_THREAD=1") \
+    $([[ "${use_thread}" != true && "${use_openmp}" != true ]] || echo "-DNUM_THREADS=64") \
+    $([[ "${use_openmp}" != true ]] && echo "-DUSE_OPENMP=0" || echo "-DUSE_OPENMP=1") \
     "${_extra_config[@]}" \
     ${_idx_opt} \
     ../${_realname}-${pkgver}
