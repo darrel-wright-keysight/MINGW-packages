@@ -35,7 +35,7 @@ depends=($([[ "$_enable_gst" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-gst-pl
          "${MINGW_PACKAGE_PREFIX}-libtiff"
          "${MINGW_PACKAGE_PREFIX}-libwebp"
          "${MINGW_PACKAGE_PREFIX}-ogre3d"
-         $([[ "${no_openblas}" == false ]] && echo "${MINGW_PACKAGE_PREFIX}-openblas")
+         $([[ "${no_openblas}" != true ]] && echo "${MINGW_PACKAGE_PREFIX}-openblas")
          "${MINGW_PACKAGE_PREFIX}-openjpeg2"
          "${MINGW_PACKAGE_PREFIX}-openexr"
          "${MINGW_PACKAGE_PREFIX}-protobuf"
