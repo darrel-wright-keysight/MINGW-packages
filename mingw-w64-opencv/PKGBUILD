@@ -5,7 +5,8 @@ _enable_gst=yes
 _realname=opencv
 pkgbase=mingw-w64-${_realname}
 pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}"
-         "${MINGW_PACKAGE_PREFIX}-python-${_realname}")
+         $([[ "${no_python_bindings}" != true ]] && echo "${MINGW_PACKAGE_PREFIX}-python-${_realname}")
+)
 pkgver=4.11.0
 pkgrel=1
 pkgdesc="Open Source Computer Vision Library (mingw-w64)"
@@ -35,7 +36,7 @@ depends=($([[ "$_enable_gst" == "yes" ]] && echo "${MINGW_PACKAGE_PREFIX}-gst-pl
          "${MINGW_PACKAGE_PREFIX}-libtiff"
          "${MINGW_PACKAGE_PREFIX}-libwebp"
          "${MINGW_PACKAGE_PREFIX}-ogre3d"
-         "${MINGW_PACKAGE_PREFIX}-openblas"
+         $([[ "${no_openblas}" != true ]] && echo "${MINGW_PACKAGE_PREFIX}-openblas")
          "${MINGW_PACKAGE_PREFIX}-openjpeg2"
          "${MINGW_PACKAGE_PREFIX}-openexr"
          "${MINGW_PACKAGE_PREFIX}-protobuf"
@@ -119,7 +120,9 @@ build() {
   mkdir -p "${srcdir}"/build-${MSYSTEM} && cd "${srcdir}"/build-${MSYSTEM}
 
   export OpenEXR_HOME=${MINGW_PREFIX}
-  export OpenBLAS_HOME=${MINGW_PREFIX}
+  if [[ "${no_openblas}" != true ]]; then
+    export OpenBLAS_HOME=${MINGW_PREFIX}
+  fi
 
   local -a _extra_config
   if check_option "debug" "n"; then
@@ -149,7 +152,7 @@ build() {
     -DBUILD_PROTOBUF=OFF \
     -DBUILD_EXAMPLES=OFF \
     -DBUILD_JAVA=OFF \
-    -DBUILD_opencv_python3=ON \
+    -DBUILD_opencv_python3=$([[ "${no_python_bindings}" != true ]] && echo "ON" || echo "OFF") \
     -DBUILD_opencv_bioinspired=OFF \
     -DBUILD_opencv_python2=OFF \
     -DWITH_FFMPEG=ON \
@@ -183,6 +186,7 @@ build() {
     -Dprotobuf_MODULE_COMPATIBLE=ON \
     -DENABLE_PRECOMPILED_HEADERS=OFF \
     -DCMAKE_CXX_STANDARD=17 \
+    $([[ "${no_openblas}" != true ]] && echo "-DWITH_LAPACK=ON" || echo "-DWITH_LAPACK=OFF") \
     "${_extra_config[@]}" \
     ../${_realname}-${pkgver}
 
