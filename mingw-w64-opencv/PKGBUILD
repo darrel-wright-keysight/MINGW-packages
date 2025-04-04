@@ -5,7 +5,8 @@ _enable_gst=yes
 _realname=opencv
 pkgbase=mingw-w64-${_realname}
 pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}"
-         "${MINGW_PACKAGE_PREFIX}-python-${_realname}")
+         $([[ "${no_python_bindings}" != true ]] && echo "${MINGW_PACKAGE_PREFIX}-python-${_realname}")
+)
 pkgver=4.11.0
 pkgrel=1
 pkgdesc="Open Source Computer Vision Library (mingw-w64)"
@@ -151,7 +152,7 @@ build() {
     -DBUILD_PROTOBUF=OFF \
     -DBUILD_EXAMPLES=OFF \
     -DBUILD_JAVA=OFF \
-    -DBUILD_opencv_python3=ON \
+    -DBUILD_opencv_python3=$([[ "${no_python_bindings}" != true ]] && echo "ON" || echo "OFF") \
     -DBUILD_opencv_bioinspired=OFF \
     -DBUILD_opencv_python2=OFF \
     -DWITH_FFMPEG=ON \
