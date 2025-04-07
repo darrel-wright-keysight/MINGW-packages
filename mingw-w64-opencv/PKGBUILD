@@ -139,6 +139,7 @@ build() {
   MSYS2_ARG_CONV_EXCL="-DCMAKE_INSTALL_PREFIX=;-DPYTHON3_PACKAGES_PATH=" \
   ${MINGW_PREFIX}/bin/cmake.exe -Wno-dev \
     -G"Ninja" \
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
     -DCMAKE_INSTALL_PREFIX=${MINGW_PREFIX} \
     -DCMAKE_SKIP_RPATH=ON \
     -DCMAKE_DLL_NAME_WITH_SOVERSION=ON \
@@ -189,12 +190,12 @@ build() {
     "${_extra_config[@]}" \
     ../${_realname}-${pkgver}
 
-  ${MINGW_PREFIX}/bin/cmake -DCMAKE_POLICY_VERSION_MINIMUM=3.5 --build .
+  ${MINGW_PREFIX}/bin/cmake --build .
 }
 
 package_opencv() {
   cd "${srcdir}/build-${MSYSTEM}"
-  DESTDIR="${pkgdir}" ${MINGW_PREFIX}/bin/cmake -DCMAKE_POLICY_VERSION_MINIMUM=3.5 --install .
+  DESTDIR="${pkgdir}" ${MINGW_PREFIX}/bin/cmake --install .
 
   # Split Python bindings
   rm -rf "${pkgdir}${MINGW_PREFIX}"/lib/python3*
@@ -210,7 +211,7 @@ package_python-opencv() {
   optdepends=()
 
   cd "${srcdir}/build-${MSYSTEM}"
-  DESTDIR="${pkgdir}" ${MINGW_PREFIX}/bin/cmake -DCMAKE_POLICY_VERSION_MINIMUM=3.5 --install modules/python3
+  DESTDIR="${pkgdir}" ${MINGW_PREFIX}/bin/cmake --install modules/python3
 }
 
 # template start; name=mingw-w64-splitpkg-wrappers; version=1.0;
